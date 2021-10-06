@@ -21,16 +21,14 @@ namespace TietokantaTesti
             //Käyttöliittymälooppi ja sen muuttujat
             string choice = "";
             int input = 0;
-            while (input != 6)
+            while (input != 4)
             {
                 //Käyttöliittymän määrittely
                 Console.WriteLine("Valitse toiminnallisuus syöttämällä numero:\n" +
                                     "1: Katsele pelien tietoja\n" +
                                     "2: Katsele Pelaajien tietoja\n" +
                                     "3: Katsele Pelistudioiden tietoja\n" +
-                                    "4: Kymmenen tuottavinta pelaajaa\n" +
-                                    "5: Kymmenen tuottavinta peliä\n" +
-                                    "6: Lopeta tietojen katselu\n");
+                                    "4: Lopeta tietojen katselu\n");
 
                 // Valinnan talletus
                 input = Convert.ToInt32(Console.ReadLine());
@@ -51,32 +49,15 @@ namespace TietokantaTesti
                         tietojenKasittely.HaePelaajanTiedot(etunimi, sukunimi);
                         break;
                     case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
+                        Console.WriteLine("Minkä pelistudion tietoja haluat katsella?\n");
+                        choice = Console.ReadLine().ToLower();
+                        tietojenKasittely.HaePelistudionTiedot(choice);
                         break;
                 }
-                if(input < 6)
-                {
-                    TulostaTiedot();
-                    int katselu = 1;
-                    while (katselu != 0)
-                    {
-                        Console.WriteLine("Syötä nolla poistuaksesi\n");
-                        katselu = Convert.ToInt32(Console.ReadLine());
-                    }
-                }
+                
                 
             }
             tietojenKasittely.GetTietokanta().SuljeYhteys();
-
-        }
-        public static void TulostaTiedot()
-        {
-            Console.WriteLine("Halutut tiedot");
         }
     }
 
