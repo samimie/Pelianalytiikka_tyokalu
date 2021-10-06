@@ -20,7 +20,8 @@ namespace Pelianalytiikka_työkalu
         }
         public void HaePelinTiedot(string peli)
         {
-            tulostaKaikkiPelit();
+            //tulostaKaikkiPelit();
+            haePelinTuotto(peli);
         }
 
         public void HaePelaajanTiedot(string etunimi, string sukunimi)
