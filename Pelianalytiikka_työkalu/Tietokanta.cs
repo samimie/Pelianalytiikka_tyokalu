@@ -65,6 +65,10 @@ namespace Pelianalytiikka_työkalu
                     }
                 }
         }
+        public void haePelinViikottaisetKayttajat(string peli)
+        {
+
+        }
 
     }
 }

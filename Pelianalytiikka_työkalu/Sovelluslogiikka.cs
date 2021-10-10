@@ -20,7 +20,7 @@ namespace Pelianalytiikka_työkalu
         }
         public void HaePelinTiedot(string peli)
         {
-            
+            this.tietokanta.haePelinViikottaisetKayttajat(peli);
         }
 
         public void HaePelaajanTiedot(string etunimi, string sukunimi)
