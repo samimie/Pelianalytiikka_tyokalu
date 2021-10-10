@@ -21,17 +21,17 @@ namespace Pelianalytiikka_työkalu
         public void HaePelinTiedot(string peli)
         {
             //tulostaKaikkiPelit();
-            haePelinTuotto(peli);
+            this.tietokanta.haePelinTuotto(peli);
         }
 
         public void HaePelaajanTiedot(string etunimi, string sukunimi)
         {
-            haeRahasiirtojenSumma(etunimi);
+            this.tietokanta.haeRahasiirtojenSumma(etunimi);
         }
 
         public void HaePelistudionTiedot(string pelistudio)
         {
-            haePelistudionPelit(pelistudio);
+            this.tietokanta.haePelistudionPelit(pelistudio);
         }
     }
 }

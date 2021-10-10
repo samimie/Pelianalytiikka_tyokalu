@@ -120,7 +120,7 @@ namespace Pelianalytiikka_työkalu
                 }
             }
         }
-
+        public void haeKPtiedot({ })
 
 
 
