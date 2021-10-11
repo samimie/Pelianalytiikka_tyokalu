@@ -33,6 +33,8 @@ namespace Pelianalytiikka_työkalu
             Console.WriteLine("Pelaajan " + etunimi + " " + sukunimi + " tiedot: "+
             "\nPelaajan rahasiirtojen summa: " + this.tietokanta.haeRahasiirtojenSumma(etunimi) +
             "\nKeskimääräiset päivittäiset ostot: " + this.tietokanta.haePaivanKeskimaaraisetOstot(etunimi, sukunimi) +
+            "\nPelaajan viikon aikana pelatut tunnit: " + this.tietokanta.haePelaajanViikottaisetPelitunnit(etunimi, sukunimi) +
+            "\nPelaajan tänään pelatut tunnit: " + this.tietokanta.haePelaajanPaivittaisetPelitunnit(etunimi, sukunimi) +
             "\n \n");
         }
 

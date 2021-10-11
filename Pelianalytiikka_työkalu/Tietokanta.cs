@@ -44,29 +44,9 @@ namespace Pelianalytiikka_työkalu
             this.tietokantaYhteys.Close();
             Console.WriteLine("Yhteys tietokantaan suljettiin");
         }
-
-        public void tulostaKaikkiPelit()
-        {       
-                // Tietokantakyselyn tekeminen
-                MySqlCommand cmd = new MySqlCommand("select * from Peli", this.tietokantaYhteys);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                // Check is the reader has any rows at all before starting to read.
-                if (reader.HasRows)
-                {
-                    // Read advances to the next row.
-                    while (reader.Read())
-                    {
-                        int id = reader.GetInt32(reader.GetOrdinal("Peli_ID"));
-                        string nimi = reader.GetString(reader.GetOrdinal("Nimi"));
-
-                        Console.WriteLine(id + " " + nimi);
-                    }
-                }
-            reader.Close();
-        }
-
-        public string haePelinTuotto(string peliNimi) {
+        //Hakee yksittäisen pelin kaikkien rahasirtojen summan
+        public string haePelinTuotto(string peliNimi)
+        {
             string summa = "";
             // Tietokantakyselyn tekeminen
             MySqlCommand cmd = new MySqlCommand("Select SUM(Summa) AS 'Pelin Tuotto' " +
@@ -76,17 +56,18 @@ namespace Pelianalytiikka_työkalu
                 "AND Peli.Nimi = '" + peliNimi + "';", this.tietokantaYhteys);
             MySqlDataReader reader = cmd.ExecuteReader();
 
-                // Check is the reader has any rows at all before starting to read.
-                if (reader.HasRows)
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        summa = reader.GetString(reader.GetOrdinal("Pelin Tuotto"));
-                    }
+                    summa = reader.GetString(reader.GetOrdinal("Pelin Tuotto"));
                 }
+            }
             reader.Close();
             return summa;
         }
+        //Hakee tietyn pelin pelaajien kokonaiskulutuksen keskiarvon
         public string haePelaajienKeskikulutus(string peliNimi)
         {
             string tulos = "";
@@ -109,6 +90,7 @@ namespace Pelianalytiikka_työkalu
             reader.Close();
             return tulos;
         }
+        //Hakee tietyn pelin pelaajien keskimääräisen pelisession pituuden
         public string haePelisessionKeskipituus(string peliNimi)
         {
             string tulos = "";
@@ -130,8 +112,9 @@ namespace Pelianalytiikka_työkalu
             reader.Close();
             return tulos;
         }
-
-        public void haePelistudionPelit(string studioNimi) {
+        //Hakee tietyn pelistudion kaikki pelit
+        public void haePelistudionPelit(string studioNimi)
+        {
             // Tietokantakyselyn tekeminen
             MySqlCommand cmd = new MySqlCommand("Select Peli.Nimi " +
                 "FROM Pelistudio, Peli " +
@@ -139,36 +122,40 @@ namespace Pelianalytiikka_työkalu
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // Check is the reader has any rows at all before starting to read.
-            if (reader.HasRows) {
+            if (reader.HasRows)
+            {
                 // Read advances to the next row.
-                while (reader.Read()) {
+                while (reader.Read())
+                {
                     string nimi = reader.GetString(reader.GetOrdinal("Nimi"));
                     Console.WriteLine(nimi);
                 }
             }
             reader.Close();
         }
-
-        public string haeRahasiirtojenSumma(string pelaajaNimi) {
+        //Hakee tietyn pelaajan kaikkien rahasiirtojen summan
+        public string haeRahasiirtojenSumma(string pelaajaNimi)
+        {
             string summa = "";
             // Tietokantakyselyn tekeminen
-            MySqlCommand cmd = new MySqlCommand("Select SUM(Summa) AS 'Rahasiirtojen Summa'" + 
-            " from Rahasiirto, Pelisessio, Pelaaja " + 
-            "where Rahasiirto.Sessio_ID = Pelisessio.Sessio_ID " + 
+            MySqlCommand cmd = new MySqlCommand("Select SUM(Summa) AS 'Rahasiirtojen Summa'" +
+            " from Rahasiirto, Pelisessio, Pelaaja " +
+            "where Rahasiirto.Sessio_ID = Pelisessio.Sessio_ID " +
             "AND Pelisessio.Pelaaja_ID = Pelaaja.Pelaaja_ID " +
             "AND Pelaaja.Etunimi = '" + pelaajaNimi + "';", this.tietokantaYhteys);
             MySqlDataReader reader = cmd.ExecuteReader();
 
-            // Check is the reader has any rows at all before starting to read.
-            if (reader.HasRows) {
-                // Read advances to the next row.
-                while (reader.Read()) {
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
                     summa = reader.GetString(reader.GetOrdinal("Rahasiirtojen Summa"));
                 }
             }
             reader.Close();
             return summa;
         }
+        //Hakee tietyn pelaajan keskimääräiset päivän ostot
         public string haePaivanKeskimaaraisetOstot(string etunimi, string sukunimi)
         {
             string summa = "";
@@ -179,7 +166,7 @@ namespace Pelianalytiikka_työkalu
             "AND Pelisessio.Pelaaja_ID = Pelaaja.Pelaaja_ID " +
             "AND Pelaaja.Etunimi = '" + etunimi +
             "' AND Pelaaja.Sukunimi = '" + sukunimi +
-            "' AND Alkuaika BETWEEN NOW() - INTERVAL 7 DAY AND NOW()" + ";", this.tietokantaYhteys);
+            "' AND Alkuaika BETWEEN NOW() - INTERVAL 1 DAY AND NOW()" + ";", this.tietokantaYhteys);
             MySqlDataReader reader = cmd.ExecuteReader();
 
             // Check is the reader has any rows at all before starting to read.
@@ -194,6 +181,7 @@ namespace Pelianalytiikka_työkalu
             reader.Close();
             return summa;
         }
+        //Hakee pelin pelisessioista uniikkien Pelaaja_ID-kenttien summan viimeisen 30 päivän sisällä.
         public string haeKuukaudenPelaajat(string peli)
         {
             string tulos = "";
@@ -210,12 +198,13 @@ namespace Pelianalytiikka_työkalu
                 // Read advances to the next row.
                 while (reader.Read())
                 {
-                    tulos = reader.GetString(reader.GetOrdinal("Kuukausittaiset_pelaajat")); 
+                    tulos = reader.GetString(reader.GetOrdinal("Kuukausittaiset_pelaajat"));
                 }
             }
             reader.Close();
             return tulos;
         }
+        //Hakee pelin pelisessioista uniikkien Pelaaja_ID-kenttien summan viimeisen 7 päivän sisällä.
         public string haeViikonPelaajat(string peli)
         {
             string tulos = "";
@@ -238,6 +227,7 @@ namespace Pelianalytiikka_työkalu
             reader.Close();
             return tulos;
         }
+        //Hakee pelin pelisessioista uniikkien Pelaaja_ID-kenttien summan viimeisen 24 tunnin sisällä.
         public string haePaivanPelaajat(string peli)
         {
             string tulos = "";
@@ -261,7 +251,57 @@ namespace Pelianalytiikka_työkalu
             return tulos;
         }
 
+        public string haePelaajanViikottaisetPelitunnit(string etunimi, string sukunimi)
+        {
+            string summa = "";
+            // Tietokantakyselyn tekeminen
+            MySqlCommand cmd = new MySqlCommand("SELECT SUM(TIMESTAMPDIFF(HOUR, Pelisessio.Alkuaika, Pelisessio.Loppuaika)) " +
+            "FROM Pelisessio, Pelaaja " +
+            "WHERE Pelisessio.Pelaaja_ID = Pelaaja.Pelaaja_ID " +
+            "AND Pelaaja.Etunimi = '" + etunimi +
+            "' AND Pelaaja.Sukunimi = '" + sukunimi +
+            "' AND Alkuaika BETWEEN NOW() - INTERVAL 7 DAY AND NOW()" + ";", this.tietokantaYhteys);
+            MySqlDataReader reader = cmd.ExecuteReader();
 
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                // Read advances to the next row.
+                while (reader.Read())
+                {
+                    summa = reader.GetString(reader.GetOrdinal("Rahasiirtojen_summa"));
+                }
+            }
+            reader.Close();
+            return summa;
+
+        }
+
+        public string haePelaajanPaivittaisetPelitunnit(string etunimi, string sukunimi)
+        {
+            string summa = "";
+            // Tietokantakyselyn tekeminen
+            MySqlCommand cmd = new MySqlCommand("SELECT SUM(TIMESTAMPDIFF(HOUR, Pelisessio.Alkuaika, Pelisessio.Loppuaika)) " +
+            "FROM Pelisessio, Pelaaja " +
+            "WHERE Pelisessio.Pelaaja_ID = Pelaaja.Pelaaja_ID " +
+            "AND Pelaaja.Etunimi = '" + etunimi +
+            "' AND Pelaaja.Sukunimi = '" + sukunimi +
+            "' AND Alkuaika BETWEEN NOW() - INTERVAL 1 DAY AND NOW()" + ";", this.tietokantaYhteys);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                // Read advances to the next row.
+                while (reader.Read())
+                {
+                    summa = reader.GetString(reader.GetOrdinal("Rahasiirtojen_summa"));
+                }
+            }
+            reader.Close();
+            return summa;
+
+        }
 
     }
 }
