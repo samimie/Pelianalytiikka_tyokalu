@@ -20,8 +20,11 @@ namespace Pelianalytiikka_työkalu
         }
         public void HaePelinTiedot(string peli)
         {
-            //tulostaKaikkiPelit();
             this.tietokanta.haePelinTuotto(peli);
+            Console.WriteLine("Pelaajia tänään: " + this.tietokanta.haePaivanPelaajat(peli) +
+            "\nPelaajia viikossa: " + this.tietokanta.haeKuukaudenPelaajat(peli) +
+            "\nPelaajia kuukaudessa: " + this.tietokanta.haeKuukaudenPelaajat(peli) +
+            "\nPelin tuotto: " + this.tietokanta.haePelinTuotto(peli) + "\n \n");
         }
 
         public void HaePelaajanTiedot(string etunimi, string sukunimi)

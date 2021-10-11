@@ -63,9 +63,11 @@ namespace Pelianalytiikka_työkalu
                         Console.WriteLine(id + " " + nimi);
                     }
                 }
+            reader.Close();
         }
 
-        public void haePelinTuotto(string peliNimi) {
+        public string haePelinTuotto(string peliNimi) {
+            string summa = "";
             // Tietokantakyselyn tekeminen
             MySqlCommand cmd = new MySqlCommand("Select SUM(Summa) AS 'Pelin Tuotto' " +
                 "From Peli, Rahasiirto, Pelisessio " +
@@ -79,10 +81,11 @@ namespace Pelianalytiikka_työkalu
                 {
                     while (reader.Read())
                     {
-                        string summa = reader.GetString(reader.GetOrdinal("Pelin Tuotto"));
-                        Console.WriteLine(summa);
+                        summa = reader.GetString(reader.GetOrdinal("Pelin Tuotto"));
                     }
                 }
+            reader.Close();
+            return summa;
         }
 
         public void haePelistudionPelit(string studioNimi) {
@@ -100,6 +103,7 @@ namespace Pelianalytiikka_työkalu
                     Console.WriteLine(nimi);
                 }
             }
+            reader.Close();
         }
 
         public void haeRahasiirtojenSumma(string pelaajaNimi) {
@@ -119,8 +123,74 @@ namespace Pelianalytiikka_työkalu
                     Console.WriteLine(summa);
                 }
             }
+            reader.Close();
         }
-        public void haeKPtiedot({ })
+        public string haeKuukaudenPelaajat(string peli)
+        {
+            string tulos = "";
+            // Tietokantakyselyn tekeminen
+            MySqlCommand cmd = new MySqlCommand("SELECT COUNT(DISTINCT Pelaaja_ID) AS Kuukausittaiset_pelaajat " +
+            "FROM Pelisessio, Peli " +
+            "WHERE Alkuaika BETWEEN NOW() - INTERVAL 30 DAY AND NOW() " +
+            "AND Pelisessio.Peli_ID = Peli.Peli_ID AND Peli.Nimi ='" + peli + "';", this.tietokantaYhteys);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                // Read advances to the next row.
+                while (reader.Read())
+                {
+                    tulos = reader.GetString(reader.GetOrdinal("Kuukausittaiset_pelaajat")); 
+                }
+            }
+            reader.Close();
+            return tulos;
+        }
+        public string haeViikonPelaajat(string peli)
+        {
+            string tulos = "";
+            // Tietokantakyselyn tekeminen
+            MySqlCommand cmd = new MySqlCommand("SELECT COUNT(DISTINCT Pelaaja_ID) AS Kuukausittaiset_pelaajat " +
+            "FROM Pelisessio, Peli " +
+            "WHERE Alkuaika BETWEEN NOW() - INTERVAL 7 DAY AND NOW() " +
+            "AND Pelisessio.Peli_ID = Peli.Peli_ID AND Peli.Nimi ='" + peli + "';", this.tietokantaYhteys);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                // Read advances to the next row.
+                while (reader.Read())
+                {
+                    tulos = reader.GetString(reader.GetOrdinal("Kuukausittaiset_pelaajat"));
+                }
+            }
+            reader.Close();
+            return tulos;
+        }
+        public string haePaivanPelaajat(string peli)
+        {
+            string tulos = "";
+            // Tietokantakyselyn tekeminen
+            MySqlCommand cmd = new MySqlCommand("SELECT COUNT(DISTINCT Pelaaja_ID) AS Kuukausittaiset_pelaajat " +
+            "FROM Pelisessio, Peli " +
+            "WHERE Alkuaika BETWEEN NOW() - INTERVAL 1 DAY AND NOW() " +
+            "AND Pelisessio.Peli_ID = Peli.Peli_ID AND Peli.Nimi ='" + peli + "';", this.tietokantaYhteys);
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            // Check is the reader has any rows at all before starting to read.
+            if (reader.HasRows)
+            {
+                // Read advances to the next row.
+                while (reader.Read())
+                {
+                    tulos = reader.GetString(reader.GetOrdinal("Kuukausittaiset_pelaajat"));
+                }
+            }
+            reader.Close();
+            return tulos;
+        }
 
 
 
