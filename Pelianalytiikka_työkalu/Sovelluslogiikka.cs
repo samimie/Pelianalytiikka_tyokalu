@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pelianalytiikka_työkalu
 {
@@ -20,7 +16,7 @@ namespace Pelianalytiikka_työkalu
         }
         public void HaePelinTiedot(string peli)
         {
-            Console.WriteLine("Pelaajia tänään: " + this.tietokanta.haePaivanPelaajat(peli) +
+            Console.WriteLine("\nPelaajia tänään: " + this.tietokanta.haePaivanPelaajat(peli) +
             "\nPelaajia viikossa: " + this.tietokanta.haeKuukaudenPelaajat(peli) +
             "\nPelaajia kuukaudessa: " + this.tietokanta.haeKuukaudenPelaajat(peli) +
             "\nPelin tuotto: " + this.tietokanta.haePelinTuotto(peli) + " euroa." +
@@ -30,17 +26,30 @@ namespace Pelianalytiikka_työkalu
 
         public void HaePelaajanTiedot(string etunimi, string sukunimi)
         {
-            Console.WriteLine("Pelaajan " + etunimi + " " + sukunimi + " tiedot: "+
-            "\nPelaajan rahasiirtojen summa: " + this.tietokanta.haeRahasiirtojenSumma(etunimi) +
-            "\nKeskimääräiset päivittäiset ostot: " + this.tietokanta.haePaivanKeskimaaraisetOstot(etunimi, sukunimi) +
-            "\nPelaajan viikon aikana pelatut tunnit: " + this.tietokanta.haePelaajanViikottaisetPelitunnit(etunimi, sukunimi) +
-            "\nPelaajan tänään pelatut tunnit: " + this.tietokanta.haePelaajanPaivittaisetPelitunnit(etunimi, sukunimi) +
+            Console.WriteLine("\nPelaajan " + etunimi + " " + sukunimi + " tiedot: " +
+            "\nPelaajan rahasiirtojen summa: " + this.tietokanta.haeRahasiirtojenSumma(etunimi) + " euroa " +
+            "\nKeskimääräiset päivittäiset ostot: " + this.tietokanta.haePaivanKeskimaaraisetOstot(etunimi, sukunimi) + " euroa " +
+            "\nKeskimääräiset päivittäiset pelimäärät: " + this.tietokanta.haePaivanKeskimaaraisetPelimaarat(etunimi, sukunimi) + " minuuttia " +
+            "\nPelaajan viikon aikana pelatut minuutit: " + this.tietokanta.haePelaajanViikottaisetPelimaarat(etunimi, sukunimi) + " minuuttia " +
+            "\nPelaajan tänään pelatut minuutit: " + this.tietokanta.haePelaajanPaivittaisetPelimaarat(etunimi, sukunimi) + " minuuttia " +
             "\n \n");
         }
 
         public void HaePelistudionTiedot(string pelistudio)
         {
+            Console.WriteLine("\n");
             this.tietokanta.haePelistudionPelit(pelistudio);
+        }
+
+        public void HaeTopTenTuottavimmatPelaajat()
+        {
+            this.tietokanta.HaeTopTenTuottavimmatPelaajat();
+            Console.WriteLine("\n");
+        }
+        public void HaeTopTenTuottavimmatPelit()
+        {
+            this.tietokanta.HaeTopTenTuottavimmatPelit();
+            Console.WriteLine("\n");
         }
     }
 }
